@@ -419,7 +419,7 @@ auth-user-pass
 client
 dev tun
 proto tcp-client
-remote $MYIP:110@i.ytimg.com
+remote $MYIP 110
 nobind
 persist-key
 persist-tun
@@ -439,12 +439,12 @@ reneg-sec 0
 redirect-gateway def1
 dhcp-option DNS 1.1.1.1
 dhcp-option DNS 1.0.0.1
-http-proxy $MYIP 3355
-http-proxy-option CUSTOM-HEADER CONNECT HTTP/1.0
-http-proxy-option CUSTOM-HEADER Host i.ytimg.com
-http-proxy-option CUSTOM-HEADER X-Online-Host i.ytimg.com
-http-proxy-option CUSTOM-HEADER X-Forward-Host i.ytimg.com
+http-proxy $MYIP 3356
+http-proxy-option CUSTOM-HEADER "" 
+http-proxy-option CUSTOM-HEADER "PUT https://s3.amazonaws.com HTTP/1.1"
+http-proxy-option CUSTOM-HEADER Host s3.amazonaws.com
 http-proxy-option CUSTOM-HEADER Connection Keep-Alive
+http-proxy-option CUSTOM-HEADER Upgrade-Insecure-Requests: 1 
 
 END
 echo '<ca>' >> /home/vps/public_html/gtmfbig.ovpn
@@ -535,6 +535,30 @@ END
 echo '<ca>' >> /home/vps/public_html/OpenVPN-SSL.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/OpenVPN-SSL.ovpn
 echo '</ca>' >> /home/vps/public_html/OpenVPN-SSL.ovpn
+
+cat > /home/vps/public_html/JFTV-WG.conf <<-END
+# JohnFordTV's VPN Premium Script
+# © Github.com/johndesu090
+# Official Repository: https://github.com/johndesu090/AutoScriptDS
+# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
+# For Donations, Im accepting prepaid loads or GCash transactions:
+# Smart: 09206200840
+# Facebook: https://fb.me/johndesu090
+# Thanks for using this script, Enjoy Highspeed OpenVPN Service
+[Interface]
+PrivateKey = mP0EfgBeD0vcbx91bNamvsZF8EZkBIasYE3FvuJUw2I=
+DNS = 9.9.9.9, 149.112.112.112
+Address = 172.16.0.2
+
+[Peer]
+PublicKey = bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
+AllowedIPs = 0.0.0.0/0
+AllowedIPs = ::/0
+Endpoint = engage.johnfordtv.ga:2408
+END
+echo '<ca>' >> /home/vps/public_html/JFTV-WG.conf
+cat /etc/openvpn/ca.crt >> /home/vps/public_html/JFTV-WG.conf
+echo '</ca>' >> /home/vps/public_html/JFTV-WG.conf
 
 cat > /home/vps/public_html/stunnel.conf <<-END
 
@@ -666,7 +690,7 @@ vnstat -u -i eth0
 
 # compress configs
 cd /home/vps/public_html
-zip configs.zip sun-tuctc.ovpn OpenVPN-SSL.ovpn stunnel.conf fixplan.ovpn noload.ovpn sunfreeyt.ovpn default.ovpn gtmfbig.ovpn tu200.ovpn
+zip configs.zip sun-tuctc.ovpn OpenVPN-SSL.ovpn stunnel.conf fixplan.ovpn noload.ovpn sunfreeyt.ovpn default.ovpn gtmfbig.ovpn tu200.ovpn JFTV-WG.conf
 
 # install libxml-parser
 apt-get install libxml-parser-perl -y -f
