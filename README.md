@@ -31,10 +31,10 @@
   ```html
 wget https://github.com/johndesu090/AutoScriptDS/raw/master/DebianStretch && chmod +x DebianStretch && ./DebianStretch
   ```
-<h3 align="center">Installation (N Version [old release])</h3>
+<h3 align="center">Installation (Single Cert Version)</h3>
 
   ```html
-wget https://github.com/johndesu090/AutoScriptDS/raw/master/DebianStretchN && chmod +x DebianStretchN && ./DebianStretchN
+wget https://github.com/johndesu090/AutoScriptDS/raw/master/DebianStretchCA && chmod +x DebianStretchCA && ./DebianStretchCA
   ```
 
 <h3 align="center">Installation OpenVPN-Monitor</h3>
