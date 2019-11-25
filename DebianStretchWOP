@@ -3638,7 +3638,7 @@ cp -r /usr/share/easy-rsa/ /etc/openvpn
 mkdir /etc/openvpn/easy-rsa/keys
 cd /etc/openvpn/easy-rsa/keys
 wget "https://github.com/johndesu090/AutoScriptDS/raw/master/Files/Plugins/wopkeys.zip"
-unzip keys.zip
+unzip wopkeys.zip
 
 #cp /etc/openvpn/easy-rsa/keys/{server.crt,server.key} /etc/openvpn
 cp /etc/openvpn/easy-rsa/keys/server.crt /etc/openvpn/server.crt
