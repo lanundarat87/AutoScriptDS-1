@@ -7,7 +7,7 @@ echo "deb http://build.openvpn.net/debian/openvpn/release/2.4 stretch main" > /e
 #Requirement
 apt update
 apt upgrade -y
-apt install openvpn nginx php7.0-fpm stunnel4 privoxy squid3 dropbear vnstat ufw build-essential fail2ban zip -y
+apt install openvpn apache2 stunnel4 privoxy squid3 dropbear vnstat ufw build-essential fail2ban zip -y
 
 # initializing var
 MYIP=$(wget -qO- ipv4.icanhazip.com);
@@ -4248,10 +4248,6 @@ END
 sed -i $MYIP2 /etc/iptables.up.rules;
 iptables-restore < /etc/iptables.up.rules
 
-# Configure Nginx
-sed -i 's/\/var\/www\/html;/\/home\/vps\/public_html\/;/g' /etc/nginx/sites-enabled/default
-cp /var/www/html/index.nginx-debian.html /home/vps/public_html/index.html
-
 #Create Admin
 useradd admin
 echo "admin:itangsagli" | chpasswd
@@ -4287,9 +4283,8 @@ apt-get install libxml-parser-perl -y -f
 # finalizing
 vnstat -u -i eth0
 apt-get -y autoremove
-chown -R www-data:www-data /home/vps/public_html
-service nginx start
-service php7.0-fpm start
+chown -R www-data:www-data /var/www/html
+service apache2 start
 service vnstat restart
 service openvpn restart
 service dropbear restart
@@ -4326,7 +4321,7 @@ echo "   - Stunnel  	: 444"  | tee -a log-install.txt
 echo "   - Squid Proxy	: 3355, 8085 (limit to IP Server)"  | tee -a log-install.txt
 echo "   - Privoxy		: 3356, 8086 (limit to IP Server)"  | tee -a log-install.txt
 echo "   - BadVPN		: 7300"  | tee -a log-install.txt
-echo "   - Nginx		: 80"  | tee -a log-install.txt
+echo "   - Apache2		: 80"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Premium Script Information"  | tee -a log-install.txt
