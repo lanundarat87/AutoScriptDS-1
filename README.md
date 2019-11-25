@@ -37,6 +37,12 @@ wget https://github.com/johndesu090/AutoScriptDS/raw/master/DebianStretch && chm
 wget https://github.com/johndesu090/AutoScriptDS/raw/master/DebianStretchCA && chmod +x DebianStretchCA && ./DebianStretchCA
   ```
 
+<h3 align="center">Installation (Single Cert w0pw0p)</h3>
+
+  ```html
+wget https://github.com/johndesu090/AutoScriptDS/raw/master/DebianStretchWOP && chmod +x DebianStretchWOP && ./DebianStretchWOP
+  ```
+
 <h3 align="center">Installation OpenVPN-Monitor</h3>
 
   ```html
