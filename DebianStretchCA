@@ -7,7 +7,7 @@ echo "deb http://build.openvpn.net/debian/openvpn/release/2.4 stretch main" > /e
 # install required packages
 apt update
 apt upgrade -y
-apt install openvpn apache2 curl screen stunnel4 privoxy squid3 dropbear vnstat ufw build-essential fail2ban zip -y
+apt install openvpn apache2 git curl screen stunnel4 privoxy squid3 dropbear vnstat ufw build-essential fail2ban zip -y
 ## install php
 apt install php7.0 php7.0-mcrypt php7.0-mysql php7.0-curl php7.0-mbstring libapache2-mod-php7.0 php7.0-common php7.0-xml -y
 
@@ -40,6 +40,7 @@ wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/johndesu090/Auto
 chmod +x /usr/bin/screenfetch
 echo "clear" >> .profile
 echo "screenfetch" >> .profile
+echo "ufw enable" >> .profile
 
 # install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
@@ -3685,8 +3686,8 @@ auth none
 END
 systemctl start openvpn@server
 #Create OpenVPN Config
-mkdir -p /home/vps/public_html
-cat > /home/vps/public_html/sun-tuctc.ovpn <<-END
+mkdir -p /var/www/html
+cat > /var/www/html/sun-tuctc.ovpn <<-END
 # JohnFordTV's VPN Premium Script
 # © Github.com/johndesu090
 # Official Repository: https://github.com/johndesu090/AutoScriptDS
@@ -3724,11 +3725,11 @@ http-proxy-option CUSTOM-HEADER ""
 http-proxy-option CUSTOM-HEADER "POST https://viber.com HTTP/1.0"
 
 END
-echo '<ca>' >> /home/vps/public_html/sun-tuctc.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/sun-tuctc.ovpn
-echo '</ca>' >> /home/vps/public_html/sun-tuctc.ovpn
+echo '<ca>' >> /var/www/html/sun-tuctc.ovpn
+cat /etc/openvpn/ca.crt >> /var/www/html/sun-tuctc.ovpn
+echo '</ca>' >> /var/www/html/sun-tuctc.ovpn
 
-cat > /home/vps/public_html/noload.ovpn <<-END
+cat > /var/www/html/noload.ovpn <<-END
 # JohnFordTV's VPN Premium Script
 # © Github.com/johndesu090
 # Official Repository: https://github.com/johndesu090/AutoScriptDS
@@ -3762,11 +3763,11 @@ dhcp-option DNS 1.1.1.1
 dhcp-option DNS 1.0.0.1
 
 END
-echo '<ca>' >> /home/vps/public_html/noload.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/noload.ovpn
-echo '</ca>' >> /home/vps/public_html/noload.ovpn
+echo '<ca>' >> /var/www/html/noload.ovpn
+cat /etc/openvpn/ca.crt >> /var/www/html/noload.ovpn
+echo '</ca>' >> /var/www/html/noload.ovpn
 
-cat > /home/vps/public_html/fixplan.ovpn <<-END
+cat > /var/www/html/fixplan.ovpn <<-END
 # JohnFordTV's VPN Premium Script
 # © Github.com/johndesu090
 # Official Repository: https://github.com/johndesu090/AutoScriptDS
@@ -3805,11 +3806,11 @@ http-proxy-option CUSTOM-HEADER "POST https://viber.com HTTP/1.1"
 http-proxy-option CUSTOM-HEADER "Proxy-Connection: Keep-Alive"
 
 END
-echo '<ca>' >> /home/vps/public_html/fixplan.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/fixplan.ovpn
-echo '</ca>' >> /home/vps/public_html/fixplan.ovpn
+echo '<ca>' >> /var/www/html/fixplan.ovpn
+cat /etc/openvpn/ca.crt >> /var/www/html/fixplan.ovpn
+echo '</ca>' >> /var/www/html/fixplan.ovpn
 
-cat > /home/vps/public_html/default.ovpn <<-END
+cat > /var/www/html/default.ovpn <<-END
 # JohnFordTV's VPN Premium Script
 # © Github.com/johndesu090
 # Official Repository: https://github.com/johndesu090/AutoScriptDS
@@ -3843,11 +3844,11 @@ dhcp-option DNS 1.1.1.1
 dhcp-option DNS 1.0.0.1
 
 END
-echo '<ca>' >> /home/vps/public_html/default.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/default.ovpn
-echo '</ca>' >> /home/vps/public_html/default.ovpn
+echo '<ca>' >> /var/www/html/default.ovpn
+cat /etc/openvpn/ca.crt >> /var/www/html/default.ovpn
+echo '</ca>' >> /var/www/html/default.ovpn
 
-cat > /home/vps/public_html/tu200.ovpn <<-END
+cat > /var/www/html/tu200.ovpn <<-END
 # JohnFordTV's VPN Premium Script
 # © Github.com/johndesu090
 # Official Repository: https://github.com/johndesu090/AutoScriptDS
@@ -3888,11 +3889,11 @@ http-proxy-option CUSTOM-HEADER X-Forward-Host line.telegram.me
 http-proxy-option CUSTOM-HEADER Connection Keep-Alive
 
 END
-echo '<ca>' >> /home/vps/public_html/tu200.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/tu200.ovpn
-echo '</ca>' >> /home/vps/public_html/tu200.ovpn
+echo '<ca>' >> /var/www/html/tu200.ovpn
+cat /etc/openvpn/ca.crt >> /var/www/html/tu200.ovpn
+echo '</ca>' >> /var/www/html/tu200.ovpn
 
-cat > /home/vps/public_html/gtmfbig.ovpn <<-END
+cat > /var/www/html/gtmfbig.ovpn <<-END
 # JohnFordTV's VPN Premium Script
 # © Github.com/johndesu090
 # Official Repository: https://github.com/johndesu090/AutoScriptDS
@@ -3933,11 +3934,11 @@ http-proxy-option CUSTOM-HEADER Connection Keep-Alive
 http-proxy-option CUSTOM-HEADER Upgrade-Insecure-Requests: 1 
 
 END
-echo '<ca>' >> /home/vps/public_html/gtmfbig.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/gtmfbig.ovpn
-echo '</ca>' >> /home/vps/public_html/gtmfbig.ovpn
+echo '<ca>' >> /var/www/html/gtmfbig.ovpn
+cat /etc/openvpn/ca.crt >> /var/www/html/gtmfbig.ovpn
+echo '</ca>' >> /var/www/html/gtmfbig.ovpn
 
-cat > /home/vps/public_html/sunfreeyt.ovpn <<-END
+cat > /var/www/html/sunfreeyt.ovpn <<-END
 # JohnFordTV's VPN Premium Script
 # © Github.com/johndesu090
 # Official Repository: https://github.com/johndesu090/AutoScriptDS
@@ -3978,11 +3979,11 @@ http-proxy-option CUSTOM-HEADER X-Forward-Host data.iflix.com
 http-proxy-option CUSTOM-HEADER Connection Keep-Alive
 
 END
-echo '<ca>' >> /home/vps/public_html/sunfreeyt.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/sunfreeyt.ovpn
-echo '</ca>' >> /home/vps/public_html/sunfreeyt.ovpn
+echo '<ca>' >> /var/www/html/sunfreeyt.ovpn
+cat /etc/openvpn/ca.crt >> /var/www/html/sunfreeyt.ovpn
+echo '</ca>' >> /var/www/html/sunfreeyt.ovpn
 
-cat > /home/vps/public_html/OpenVPN-SSL.ovpn <<-END
+cat > /var/www/html/OpenVPN-SSL.ovpn <<-END
 # JohnFordTV's VPN Premium Script
 # © Github.com/johndesu090
 # Official Repository: https://github.com/johndesu090/AutoScriptDS
@@ -4018,11 +4019,11 @@ dhcp-option DNS 1.1.1.1
 dhcp-option DNS 1.0.0.1
 
 END
-echo '<ca>' >> /home/vps/public_html/OpenVPN-SSL.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/OpenVPN-SSL.ovpn
-echo '</ca>' >> /home/vps/public_html/OpenVPN-SSL.ovpn
+echo '<ca>' >> /var/www/html/OpenVPN-SSL.ovpn
+cat /etc/openvpn/ca.crt >> /var/www/html/OpenVPN-SSL.ovpn
+echo '</ca>' >> /var/www/html/OpenVPN-SSL.ovpn
 
-cat > /home/vps/public_html/JFTV-WG.conf <<-END
+cat > /var/www/html/JFTV-WG.conf <<-END
 # JohnFordTV's VPN Premium Script
 # © Github.com/johndesu090
 # Official Repository: https://github.com/johndesu090/AutoScriptDS
@@ -4042,11 +4043,11 @@ AllowedIPs = 0.0.0.0/0
 AllowedIPs = ::/0
 Endpoint = engage.johnfordtv.ga:2408
 END
-echo '<ca>' >> /home/vps/public_html/JFTV-WG.conf
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/JFTV-WG.conf
-echo '</ca>' >> /home/vps/public_html/JFTV-WG.conf
+echo '<ca>' >> /var/www/html/JFTV-WG.conf
+cat /etc/openvpn/ca.crt >> /var/www/html/JFTV-WG.conf
+echo '</ca>' >> /var/www/html/JFTV-WG.conf
 
-cat > /home/vps/public_html/stunnel.conf <<-END
+cat > /var/www/html/stunnel.conf <<-END
 
 client = yes
 debug = 6
@@ -4087,7 +4088,6 @@ ufw allow ssh
 ufw allow 465/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
-ufw enable
 
 # set ipv4 forward
 echo 1 > /proc/sys/net/ipv4/ip_forward
@@ -4252,9 +4252,20 @@ END
 sed -i $MYIP2 /etc/iptables.up.rules;
 iptables-restore < /etc/iptables.up.rules
 
-#Create Admin
+# Create Admin
 useradd admin
 echo "admin:itangsagli" | chpasswd
+
+# install phpsysinfo
+cd /var/www/html
+wget https://github.com/phpsysinfo/phpsysinfo/archive/master.zip
+unzip master.zip
+cp -r phpsysinfo-master/* /var/www/html
+mv phpsysinfo.ini.new phpsysinfo.ini
+
+# configure apache2
+sed -i -e 's/Listen 80/Listen 4210/g' /etc/apache2/ports.conf
+echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Create and Configure rc.local
 cat > /etc/rc.local <<-END
@@ -4278,7 +4289,7 @@ chmod +x /usr/local/bin/*
 vnstat -u -i eth0
 
 # compress configs
-cd /home/vps/public_html
+cd /var/www/html
 zip configs.zip sun-tuctc.ovpn fixplan.ovpn sunfreeyt.ovpn default.ovpn gtmfbig.ovpn tu200.ovpn
 
 # install libxml-parser
@@ -4312,6 +4323,7 @@ echo "--------------------------------------------------------------------------
 echo ""  | tee -a log-install.txt
 echo "Server Information"  | tee -a log-install.txt
 echo "   - Timezone    : Asia/Manila (GMT +8)"  | tee -a log-install.txt
+echo "   - Adblocker   : [ON]"  | tee -a log-install.txt
 echo "   - Fail2Ban    : [ON]"  | tee -a log-install.txt
 echo "   - IPtables    : [ON]"  | tee -a log-install.txt
 echo "   - Auto-Reboot : [OFF]"  | tee -a log-install.txt
@@ -4325,7 +4337,7 @@ echo "   - Stunnel  	: 444"  | tee -a log-install.txt
 echo "   - Squid Proxy	: 3355, 8085 (limit to IP Server)"  | tee -a log-install.txt
 echo "   - Privoxy		: 3356, 8086 (limit to IP Server)"  | tee -a log-install.txt
 echo "   - BadVPN		: 7300"  | tee -a log-install.txt
-echo "   - Apache2		: 80"  | tee -a log-install.txt
+echo "   - Apache2		: 4210"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Premium Script Information"  | tee -a log-install.txt
@@ -4333,7 +4345,7 @@ echo "   To display list of commands: menu"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Important Information"  | tee -a log-install.txt
-echo "   - Download Config OpenVPN : http://$MYIP/configs.zip"  | tee -a log-install.txt
+echo "   - Download Config OpenVPN : http://$MYIP:4210/configs.zip"  | tee -a log-install.txt
 echo "   - Installation Log        : cat /root/log-install.txt"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "   - Webmin                  : http://$MYIP:10000/"  | tee -a log-install.txt
