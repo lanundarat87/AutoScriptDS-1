@@ -40,7 +40,6 @@ wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/johndesu090/Auto
 chmod +x /usr/bin/screenfetch
 echo "clear" >> .profile
 echo "screenfetch" >> .profile
-echo "ufw enable" >> .profile
 
 # install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
@@ -4261,6 +4260,7 @@ wget https://github.com/phpsysinfo/phpsysinfo/archive/master.zip
 unzip master.zip
 cp -r phpsysinfo-master/* /var/www/html
 mv phpsysinfo.ini.new phpsysinfo.ini
+rm index.html
 
 # configure apache2
 sed -i -e 's/Listen 80/Listen 4210/g' /etc/apache2/ports.conf
