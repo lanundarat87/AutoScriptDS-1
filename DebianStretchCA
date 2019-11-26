@@ -7,7 +7,7 @@ echo "deb http://build.openvpn.net/debian/openvpn/release/2.4 stretch main" > /e
 #Requirement
 apt update
 apt upgrade -y
-apt install openvpn apache2 stunnel4 privoxy squid3 dropbear vnstat ufw build-essential fail2ban zip -y
+apt install openvpn curl stunnel4 privoxy squid3 dropbear vnstat ufw build-essential fail2ban zip -y
 
 # initializing var
 MYIP=$(wget -qO- ipv4.icanhazip.com);
