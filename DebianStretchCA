@@ -3662,7 +3662,6 @@ ca ca.crt
 cert server.crt
 key server.key
 dh dh2048.pem
-key-direction 0
 verify-client-cert none
 username-as-common-name
 plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
