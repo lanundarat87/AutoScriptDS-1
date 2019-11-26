@@ -7,7 +7,7 @@ echo "deb http://build.openvpn.net/debian/openvpn/release/2.4 stretch main" > /e
 #Requirement
 apt update
 apt upgrade -y
-apt install openvpn nginx php7.0-fpm stunnel4 privoxy squid3 dropbear vnstat ufw build-essential fail2ban zip -y
+apt install openvpn nginx stunnel4 privoxy squid3 dropbear vnstat ufw build-essential fail2ban zip -y
 
 # initializing var
 MYIP=$(wget -qO- ipv4.icanhazip.com);
@@ -3652,14 +3652,15 @@ chmod +x /etc/openvpn/ca.crt
 tar -xzvf /root/plugin.tgz -C /usr/lib/openvpn/
 chmod +x /usr/lib/openvpn/*
 cat > /etc/openvpn/server.conf <<-END
-port 465
+port 443
 proto tcp
 dev tun
 ca ca.crt
 cert server.crt
 key server.key
 dh dh2048.pem
-key-direction 0
+keysize 128
+tun-mtu 1532
 verify-client-cert none
 username-as-common-name
 plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
@@ -3677,8 +3678,8 @@ status openvpn-status.log
 log openvpn.log
 verb 3
 ncp-disable
-cipher none
-auth none
+cipher BF-CBC
+auth SHA1
 
 END
 systemctl start openvpn@server
@@ -4082,7 +4083,7 @@ END
 
 #Setting UFW
 ufw allow ssh
-ufw allow 465/tcp
+ufw allow 443/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
 ufw enable
@@ -4108,17 +4109,17 @@ COMMIT
 :fail2ban-ssh - [0:0]
 -A INPUT -p tcp -m multiport --dports 22 -j fail2ban-ssh
 -A INPUT -p ICMP --icmp-type 8 -j ACCEPT
--A INPUT -i eth0 -p tcp -m tcp --dport 465 -j ACCEPT
+-A INPUT -i eth0 -p tcp -m tcp --dport 443 -j ACCEPT
 -A INPUT -i tun0 -j ACCEPT
 -A INPUT -p tcp --dport 22  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 80  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 143  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 442  -m state --state NEW -j ACCEPT
--A INPUT -p tcp --dport 443  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 465  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 444  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 587  -m state --state NEW -j ACCEPT
--A INPUT -p tcp --dport 465  -m state --state NEW -j ACCEPT
--A INPUT -p udp --dport 465  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 443  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 443  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 3355  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 3355  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 8085  -m state --state NEW -j ACCEPT
@@ -4288,8 +4289,6 @@ apt-get install libxml-parser-perl -y -f
 vnstat -u -i eth0
 apt-get -y autoremove
 chown -R www-data:www-data /home/vps/public_html
-service nginx start
-service php7.0-fpm start
 service vnstat restart
 service openvpn restart
 service dropbear restart
@@ -4319,7 +4318,7 @@ echo "   - Auto-Reboot : [OFF]"  | tee -a log-install.txt
 echo "   - IPv6        : [OFF]"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Application & Port Information"  | tee -a log-install.txt
-echo "   - OpenVPN		: TCP 465 "  | tee -a log-install.txt
+echo "   - OpenVPN		: TCP 443 "  | tee -a log-install.txt
 echo "   - OpenVPN-SSL	: 587 "  | tee -a log-install.txt
 echo "   - Dropbear		: 442"  | tee -a log-install.txt
 echo "   - Stunnel  	: 444"  | tee -a log-install.txt
