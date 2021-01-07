@@ -29,7 +29,7 @@
 <h3 align="center">Installation (Default Version)</h3>
 
   ```html
-wget https://github.com/lanundarat87/AutoScriptDS-1/blob/master/DebianStretch && chmod +x DebianStretch && ./DebianStretch
+wget https://github.com/lanundarat87/AutoScriptDS-1/raw/master/DebianStretch && chmod +x DebianStretch && ./DebianStretch
   ```
 <h3 align="center">Installation (Single Cert Version)</h3>
 
