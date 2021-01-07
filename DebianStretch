@@ -13,19 +13,19 @@ apt install openvpn nginx php7.0-fpm stunnel4 privoxy squid3 dropbear easy-rsa v
 MYIP=$(wget -qO- ipv4.icanhazip.com);
 MYIP2="s/xxxxxxxxx/$MYIP/g";
 cd /root
-wget "https://github.com/johndesu090/AutoScriptDS/raw/master/Files/Plugins/plugin.tgz"
-wget "https://github.com/johndesu090/AutoScriptDS/raw/master/Files/Menu/bashmenu.zip"
+wget "https://github.com/lanundarat87/AutoScriptDS-1/raw/master/Files/Plugins/plugin.tgz"
+wget "https://github.com/lanundarat87/AutoScriptDS-1/raw/master/Files/Menu/bashmenu.zip"
 
 # disable ipv6
 echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 
 
 # set time GMT +8
-ln -fs /usr/share/zoneinfo/Asia/Manila /etc/localtime
+ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 
 # install webmin
 cd
-wget "https://github.com/johndesu090/AutoScriptDS/raw/master/Files/Plugins/webmin_1.920_all.deb"
+wget "https://github.com/lanundarat87/AutoScriptDS-1/raw/master/Files/Plugins/webmin_1.920_all.deb"
 dpkg --install webmin_1.920_all.deb;
 apt-get -y -f install;
 sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
@@ -34,7 +34,7 @@ service webmin restart
 
 # install screenfetch
 cd
-wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/johndesu090/AutoScriptDS/master/Files/Plugins/screenfetch"
+wget -O /usr/bin/screenfetch "https://github.com/lanundarat87/AutoScriptDS-1/raw/master/Files/Plugins/screenfetch"
 chmod +x /usr/bin/screenfetch
 echo "clear" >> .profile
 echo "screenfetch" >> .profile
@@ -73,8 +73,8 @@ sed -i $MYIP2 /etc/privoxy/config;
 
 # install squid3
 cat > /etc/squid/squid.conf <<-END
-acl localhost src 127.0.0.1/32 ::1
-acl to_localhost dst 127.0.0.0/8 0.0.0.0/32 ::1
+acl localhost src 127.0.0.1/32
+#acl to_localhost dst 127.0.0.0/8 0.0.0.0/32 ::1
 acl localnet src 10.0.0.0/8
 acl localnet src 172.16.0.0/12
 acl localnet src 192.168.0.0/16
@@ -108,12 +108,13 @@ http_access allow localhost
 http_access deny all
 http_port 8085
 http_port 3355
-coredump_dir /var/spool/squid3
+coredump_dir /var/spool/squid
+cache_dir ufs /var/spool/squid 100 16 256
 refresh_pattern ^ftp: 1440 20% 10080
 refresh_pattern ^gopher: 1440 0% 1440
 refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
 refresh_pattern . 0 20% 4320
-visible_hostname FordSenpai
+visible_hostname black
 END
 sed -i $MYIP2 /etc/squid/squid.conf;
 
@@ -3620,16 +3621,16 @@ END
 
 # setting banner
 rm /etc/issue.net
-wget -O /etc/issue.net "https://raw.githubusercontent.com/johndesu090/AutoScriptDeb8/master/Files/Others/issue.net"
+wget -O /etc/issue.net "https://github.com/lanundarat87/AutoScriptDS-1/raw/master/Files/Others/issue.net"
 sed -i 's@#Banner@Banner@g' /etc/ssh/sshd_config
 sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
 service ssh restart
 service dropbear restart
 
 # install badvpn
-wget -O /usr/bin/badvpn-udpgw "https://github.com/johndesu090/AutoScriptDS/raw/master/Files/Plugins/badvpn-udpgw"
+wget -O /usr/bin/badvpn-udpgw "https://github.com/lanundarat87/AutoScriptDS-1/raw/master/Files/Plugins/badvpn-udpgw"
 if [ "$OS" == "x86_64" ]; then
-  wget -O /usr/bin/badvpn-udpgw "https://github.com/johndesu090/AutoScriptDS/raw/master/Files/Plugins/badvpn-udpgw64"
+  wget -O /usr/bin/badvpn-udpgw "https://github.com/lanundarat87/AutoScriptDS-1/raw/master/Files/Plugins/badvpn-udpgw64"
 fi
 sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
@@ -3640,14 +3641,14 @@ cp -r /usr/share/easy-rsa/ /etc/openvpn
 mkdir /etc/openvpn/easy-rsa/keys
 
 # replace bits
-sed -i 's|export KEY_COUNTRY="US"|export KEY_COUNTRY="PH"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_PROVINCE="CA"|export KEY_PROVINCE="Tarlac"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_CITY="SanFrancisco"|export KEY_CITY="Concepcion"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_ORG="Fort-Funston"|export KEY_ORG="JohnFordTV"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_EMAIL="me@myhost.mydomain"|export KEY_EMAIL="admin@johnfordtv.me"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="JohnFordTV"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_NAME="EasyRSA"|export KEY_NAME="JohnFordMangiliman"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_OU=changeme|export KEY_OU=JohnFordTV|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_COUNTRY="US"|export KEY_COUNTRY="MY"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_PROVINCE="CA"|export KEY_PROVINCE="Perak"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_CITY="SanFrancisco"|export KEY_CITY="Gerik"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_ORG="Fort-Funston"|export KEY_ORG="BlackVPN"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_EMAIL="me@myhost.mydomain"|export KEY_EMAIL="admin@blackvpn.ml"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="BlackVPN"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_NAME="EasyRSA"|export KEY_NAME="Black"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_OU=changeme|export KEY_OU=BlackVPN|' /etc/openvpn/easy-rsa/vars
 
 #Create Diffie-Helman Pem
 openssl dhparam -out /etc/openvpn/dh1024.pem 1024
@@ -3707,15 +3708,8 @@ END
 systemctl start openvpn@server
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
-cat > /home/vps/public_html/sun-tuctc.ovpn <<-END
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDS
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or PayMaya transactions:
-# Smart: 09206200840
-# SUN: 09234095648
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
+cat > /home/vps/public_html/MAXIS-TCP.ovpn <<-END
+# BlackVPN
 auth-user-pass
 client
 dev tun
@@ -3741,187 +3735,16 @@ redirect-gateway def1
 dhcp-option DNS 1.1.1.1
 dhcp-option DNS 1.0.0.1
 http-proxy $MYIP 3356
-http-proxy-option CUSTOM-HEADER ""
-http-proxy-option CUSTOM-HEADER "POST https://viber.com HTTP/1.0"
+#http-proxy-option CUSTOM-HEADER ""
+#http-proxy-option CUSTOM-HEADER "POST https://fuck.com HTTP/1.0"
 
 END
-echo '<ca>' >> /home/vps/public_html/sun-tuctc.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/sun-tuctc.ovpn
-echo '</ca>' >> /home/vps/public_html/sun-tuctc.ovpn
+echo '<ca>' >> /home/vps/public_html/MAXIS-TCP.ovpn
+cat /etc/openvpn/ca.crt >> /home/vps/public_html/MAXIS-TCP.ovpn
+echo '</ca>' >> /home/vps/public_html/MAXIS-TCP.ovpn
 
-cat > /home/vps/public_html/noload.ovpn <<-END
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDS
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
-auth-user-pass
-client
-dev tun
-proto tcp-client
-remote $MYIP 110
-persist-key
-persist-tun
-comp-lzo
-bind
-float
-remote-cert-tls server
-verb 3
-auth-user-pass
-redirect-gateway def1
-cipher none
-auth none
-auth-nocache
-auth-retry interact
-connect-retry 0 1
-nice -20
-reneg-sec 0
-dhcp-option DNS 1.1.1.1
-dhcp-option DNS 1.0.0.1
-
-END
-echo '<ca>' >> /home/vps/public_html/noload.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/noload.ovpn
-echo '</ca>' >> /home/vps/public_html/noload.ovpn
-
-cat > /home/vps/public_html/fixplan.ovpn <<-END
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDS
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
-auth-user-pass
-client
-dev tun
-proto tcp-client
-remote $MYIP 110
-nobind
-persist-key
-persist-tun
-comp-lzo
-keepalive 10 120
-tls-client
-remote-cert-tls server
-verb 3
-auth-user-pass
-cipher none
-auth none
-auth-nocache
-auth-retry interact
-connect-retry 0 1
-nice -20
-reneg-sec 0
-redirect-gateway def1
-dhcp-option DNS 1.1.1.1
-dhcp-option DNS 1.0.0.1
-http-proxy $MYIP 3356
-http-proxy-option CUSTOM-HEADER ""
-http-proxy-option CUSTOM-HEADER "POST https://viber.com HTTP/1.1"
-http-proxy-option CUSTOM-HEADER "Proxy-Connection: Keep-Alive"
-
-END
-echo '<ca>' >> /home/vps/public_html/fixplan.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/fixplan.ovpn
-echo '</ca>' >> /home/vps/public_html/fixplan.ovpn
-
-cat > /home/vps/public_html/default.ovpn <<-END
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDS
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
-auth-user-pass
-client
-dev tun
-proto tcp-client
-remote $MYIP 110
-nobind
-persist-key
-persist-tun
-comp-lzo
-keepalive 10 120
-tls-client
-remote-cert-tls server
-verb 3
-auth-user-pass
-cipher none
-auth none
-auth-nocache
-auth-retry interact
-connect-retry 0 1
-reneg-sec 0
-redirect-gateway def1
-dhcp-option DNS 1.1.1.1
-dhcp-option DNS 1.0.0.1
-
-END
-echo '<ca>' >> /home/vps/public_html/default.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/default.ovpn
-echo '</ca>' >> /home/vps/public_html/default.ovpn
-
-cat > /home/vps/public_html/tu200.ovpn <<-END
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDS
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
-auth-user-pass
-client
-dev tun
-proto tcp-client
-remote $MYIP 110
-nobind
-persist-key
-persist-tun
-comp-lzo
-keepalive 10 120
-tls-client
-remote-cert-tls server
-verb 3
-auth-user-pass
-cipher none
-auth none
-auth-nocache
-auth-retry interact
-connect-retry 0 1
-nice -20
-reneg-sec 0
-redirect-gateway def1
-dhcp-option DNS 1.1.1.1
-dhcp-option DNS 1.0.0.1
-http-proxy $MYIP 3355
-http-proxy-option CUSTOM-HEADER CONNECT HTTP/1.0
-http-proxy-option CUSTOM-HEADER Host line.telegram.me
-http-proxy-option CUSTOM-HEADER X-Online-Host line.telegram.me
-http-proxy-option CUSTOM-HEADER X-Forward-Host line.telegram.me
-http-proxy-option CUSTOM-HEADER Connection Keep-Alive
-
-END
-echo '<ca>' >> /home/vps/public_html/tu200.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/tu200.ovpn
-echo '</ca>' >> /home/vps/public_html/tu200.ovpn
-
-cat > /home/vps/public_html/gtmfbig.ovpn <<-END
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDS
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
+cat > /home/vps/public_html/DIGI.ovpn <<-END
+# BlackVPN
 auth-user-pass
 client
 dev tun
@@ -3954,19 +3777,11 @@ http-proxy-option CUSTOM-HEADER Connection Keep-Alive
 http-proxy-option CUSTOM-HEADER Upgrade-Insecure-Requests: 1 
 
 END
-echo '<ca>' >> /home/vps/public_html/gtmfbig.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/gtmfbig.ovpn
-echo '</ca>' >> /home/vps/public_html/gtmfbig.ovpn
+echo '<ca>' >> /home/vps/public_html/DIGI.ovpn
+cat /etc/openvpn/ca.crt >> /home/vps/public_html/DIGI.ovpn
+echo '</ca>' >> /home/vps/public_html/DIGI.ovpn
 
-cat > /home/vps/public_html/sunfreeyt.ovpn <<-END
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDS
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
+cat > /home/vps/public_html/MAXIS2.ovpn <<-END
 auth-user-pass
 client
 dev tun
@@ -3999,19 +3814,11 @@ http-proxy-option CUSTOM-HEADER X-Forward-Host data.iflix.com
 http-proxy-option CUSTOM-HEADER Connection Keep-Alive
 
 END
-echo '<ca>' >> /home/vps/public_html/sunfreeyt.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/sunfreeyt.ovpn
-echo '</ca>' >> /home/vps/public_html/sunfreeyt.ovpn
+echo '<ca>' >> /home/vps/public_html/MAXIS2.ovpn
+cat /etc/openvpn/ca.crt >> /home/vps/public_html/MAXIS2.ovpn
+echo '</ca>' >> /home/vps/public_html/MAXIS2.ovpn
 
 cat > /home/vps/public_html/OpenVPN-SSL.ovpn <<-END
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDS
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
 auth-user-pass
 client
 dev tun
@@ -4043,15 +3850,7 @@ echo '<ca>' >> /home/vps/public_html/OpenVPN-SSL.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/OpenVPN-SSL.ovpn
 echo '</ca>' >> /home/vps/public_html/OpenVPN-SSL.ovpn
 
-cat > /home/vps/public_html/JFTV-WG.conf <<-END
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDS
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
+cat > /home/vps/public_html/SSL.conf <<-END
 [Interface]
 PrivateKey = mP0EfgBeD0vcbx91bNamvsZF8EZkBIasYE3FvuJUw2I=
 DNS = 9.9.9.9, 149.112.112.112
@@ -4063,9 +3862,9 @@ AllowedIPs = 0.0.0.0/0
 AllowedIPs = ::/0
 Endpoint = engage.johnfordtv.ga:2408
 END
-echo '<ca>' >> /home/vps/public_html/JFTV-WG.conf
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/JFTV-WG.conf
-echo '</ca>' >> /home/vps/public_html/JFTV-WG.conf
+echo '<ca>' >> /home/vps/public_html/SSL.conf
+cat /etc/openvpn/ca.crt >> /home/vps/public_html/SSL.conf
+echo '</ca>' >> /home/vps/public_html/SSL.conf
 
 cat > /home/vps/public_html/stunnel.conf <<-END
 
@@ -4277,7 +4076,7 @@ cp /var/www/html/index.nginx-debian.html /home/vps/public_html/index.html
 
 #Create Admin
 useradd admin
-echo "admin:itangsagli" | chpasswd
+echo "admin:090988" | chpasswd
 
 # Create and Configure rc.local
 cat > /etc/rc.local <<-END
@@ -4293,7 +4092,7 @@ sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
 # Configure menu
 apt-get install unzip
 cd /usr/local/bin/
-wget "https://github.com/johndesu090/AutoScriptDS/raw/master/Files/Menu/bashmenu.zip" 
+wget "https://github.com/lanundarat87/AutoScriptDS-1/raw/master/Files/Menu/bashmenu.zip" 
 unzip bashmenu.zip
 chmod +x /usr/local/bin/*
 
@@ -4302,7 +4101,7 @@ vnstat -u -i eth0
 
 # compress configs
 cd /home/vps/public_html
-zip configs.zip sun-tuctc.ovpn OpenVPN-SSL.ovpn stunnel.conf fixplan.ovpn noload.ovpn sunfreeyt.ovpn default.ovpn gtmfbig.ovpn tu200.ovpn JFTV-WG.conf
+zip configs.zip MAXIS-TCP.ovpn OpenVPN-SSL.ovpn stunnel.conf DIGI.ovpn MAXIS2.ovpn sunfreeyt.ovpn SSL.conf
 
 # install libxml-parser
 apt-get install libxml-parser-perl -y -f
@@ -4335,7 +4134,7 @@ echo "                                 -FordSenpai-                             
 echo "--------------------------------------------------------------------------------"
 echo ""  | tee -a log-install.txt
 echo "Server Information"  | tee -a log-install.txt
-echo "   - Timezone    : Asia/Manila (GMT +8)"  | tee -a log-install.txt
+echo "   - Timezone    : Asia/Kuala_Lumpur (GMT +8)"  | tee -a log-install.txt
 echo "   - Fail2Ban    : [ON]"  | tee -a log-install.txt
 echo "   - IPtables    : [ON]"  | tee -a log-install.txt
 echo "   - Auto-Reboot : [OFF]"  | tee -a log-install.txt
