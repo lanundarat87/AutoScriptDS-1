@@ -34,19 +34,19 @@ wget https://github.com/lanundarat87/AutoScriptDS-1/raw/master/DebianStretch && 
 <h3 align="center">Installation (Single Cert Version)</h3>
 
   ```html
-wget https://github.com/johndesu090/AutoScriptDS/raw/master/DebianStretchCA && chmod +x DebianStretchCA && ./DebianStretchCA
+wget https://github.com/lanundarat87/AutoScriptDS-1/raw/master/DebianStretchCA && chmod +x DebianStretchCA && ./DebianStretchCA
   ```
 
 <h3 align="center">Installation (Single Cert w0pw0p)</h3>
 
   ```html
-wget https://github.com/johndesu090/AutoScriptDS/raw/master/DebianStretchWOP && chmod +x DebianStretchWOP && ./DebianStretchWOP
+wget https://github.com/lanundarat87/AutoScriptDS-1/raw/master/DebianStretchWOP && chmod +x DebianStretchWOP && ./DebianStretchWOP
   ```
 
 <h3 align="center">Installation OpenVPN-Monitor</h3>
 
   ```html
-wget https://raw.githubusercontent.com/johndesu090/AutoScriptDS/master/Files/Plugins/ovpnmonitor.sh && chmod +x ovpnmonitor.sh && ./ovpnmonitor.sh
+wget https://github.com/lanundarat87/AutoScriptDS-1/raw/master/Files/Plugins/ovpnmonitor.sh && chmod +x ovpnmonitor.sh && ./ovpnmonitor.sh
   ```
 
 
